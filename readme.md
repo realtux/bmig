@@ -53,3 +53,6 @@ bmig rollback
   * rollback one
   * config.json supported
   * some error checking
+
+### license
+bmig is available under the MIT License
