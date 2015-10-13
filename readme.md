@@ -10,7 +10,7 @@ sudo apt-get install libmysqlclient-dev libjson0-dev
 # rhel
 sudo yum install mysql-devel json-c-devel
 
-# os x
+# os x (using [Homebrew](http://brew.sh))
 brew install gcc json-c mysql-connector-c
 ```
 
