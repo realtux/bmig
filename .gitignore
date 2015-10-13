@@ -1,2 +1,3 @@
 bmig
+config.json
 migrations/*.sql
