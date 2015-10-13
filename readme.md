@@ -54,5 +54,8 @@ bmig rollback
   * config.json supported
   * some error checking
 
+### special thanks
+corey edwards (@cedwardsmedia) -- osx build procedures & testing
+
 ### license
 bmig is available under the MIT License
