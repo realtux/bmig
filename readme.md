@@ -11,7 +11,7 @@ sudo apt-get install libmysqlclient-dev libjson0-dev
 sudo yum install mysql-devel json-c-devel
 
 # os x
-somebody figure this out and pr me
+brew install gcc json-c mysql-connector-c
 ```
 
 __clone & compile__
