@@ -234,10 +234,11 @@ int main(int argc, char **argv) {
 				strcat(path, migration_path);
 				strcat(path, local_mig[i]);
 
-				char *mig = read_file(path);
+				long mig_size;
+				char *mig = read_file(path, &mig_size);
 
-				char *up = malloc(3000000);
-				char *down = malloc(3000000);
+				char *up = malloc(mig_size + 1);
+				char *down = malloc(mig_size + 1);
 
 				populate_up_down(mig, up, down);
 
@@ -292,10 +293,11 @@ int main(int argc, char **argv) {
 		strcat(path, migration_path);
 		strcat(path, local_mig[last_mig]);
 
-		char *mig = read_file(path);
+		long mig_size;
+		char *mig = read_file(path, &mig_size);
 
-		char *up = malloc(3000000);
-		char *down = malloc(3000000);
+		char *up = malloc(mig_size + 1);
+		char *down = malloc(mig_size + 1);
 
 		populate_up_down(mig, up, down);
 

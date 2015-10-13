@@ -8,7 +8,8 @@
 enum json_type type;
 
 char *read_config() {
-	char *json = read_file("config.json");
+	long config_size;
+	char *json = read_file("config.json", &config_size);
 
 	return json;
 }

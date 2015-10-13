@@ -1,5 +1,5 @@
 migrator: clean
-	gcc src/migrator.c -g \
+	gcc src/bmig.c \
 		src/config.c \
 		src/mysql.c \
 		src/util.c \

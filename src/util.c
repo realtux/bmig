@@ -34,7 +34,7 @@ void get_timestamp(char *buf) {
 	strftime(buf, 16, "%G%m%d%H%M%S", timeinfo);
 }
 
-char *read_file(char *filename) {
+char *read_file(char *filename, long *size) {
 	FILE *f = fopen(filename, "rb");
 
 	if (f == NULL) {
@@ -45,6 +45,9 @@ char *read_file(char *filename) {
 	fseek(f, 0, SEEK_END);
 	long fsize = ftell(f);
 	fseek(f, 0, SEEK_SET);
+
+	// hand back size of file
+	*size = fsize;
 
 	char *string = malloc(fsize + 1);
 	fread(string, fsize, 1, f);
