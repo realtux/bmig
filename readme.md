@@ -2,8 +2,10 @@
 
 bmig is a simple, clean, easy to use mysql migration manager.
 
-make bmig
+__clone & compile__
 ```
+git clone https://github.com/ebrian/bmig
+cd bmig
 make
 sudo make install
 ```
@@ -30,3 +32,12 @@ rollback last migration
 ```
 bmig rollback
 ```
+
+### changelog
+0.0.1 (2015-10-12)
+  * create new migrations
+  * list migration status
+  * migrate all
+  * rollback one
+  * config.json supported
+  * some error checking
