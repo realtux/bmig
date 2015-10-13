@@ -1,18 +1,15 @@
-### bmig
+## bmig 0.0.1 by b
 
 bmig is a simple, clean, easy to use mysql migration manager.
-
-bmig uses the following directory structure:
-```
-migrations/ <- by default where new migrations are created
-config.json <- your config for bmig to access the right db
-```
 
 make bmig
 ```
 make
 sudo make install
 ```
+### bmig commands
+
+##### important: to use bmig, you must be in the folder with your config.json file
 
 create a new migration
 ```
