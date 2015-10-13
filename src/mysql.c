@@ -1,6 +1,19 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <mysql.h>
+
+static char *host;
+static char *user;
+static char *pass;
+static char *db;
+
+void set_db_state(char *h, char *u, char *p, char *d) {
+	host = h;
+	user = u;
+	pass = p;
+	db = d;
+}
 
 void bmig_init(MYSQL *connection) {
 	char *db =
@@ -13,14 +26,18 @@ MYSQL *get_mysql_conn() {
 	MYSQL *connection = mysql_init(NULL);
 
 	if (connection == NULL) {
-		printf("cannot get a connection");
+		printf("cannot get a connection\n\n");
 		return NULL;
 	}
 
-	mysql_real_connect(
+	if (mysql_real_connect(
 		connection,
-		"localhost", "root", "root", "apiowl",
-		0, NULL, CLIENT_MULTI_STATEMENTS);
+		host, user, pass, db,
+		0, NULL, CLIENT_MULTI_STATEMENTS) == NULL) {
+
+		printf("error connecting to server\n\n");
+		exit(1);
+	}
 
 	bmig_init(connection);
 

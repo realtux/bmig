@@ -38,7 +38,7 @@ char *read_file(char *filename) {
 	FILE *f = fopen(filename, "rb");
 
 	if (f == NULL) {
-		printf("error opening migration file");
+		printf("error opening file\n\n");
 		exit(1);
 	}
 
@@ -52,6 +52,6 @@ char *read_file(char *filename) {
 	fclose(f);
 
 	string[fsize] = 0;
-	
+
 	return string;
 }

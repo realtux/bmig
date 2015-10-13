@@ -4,14 +4,19 @@
 #include <mysql.h>
 #include <string.h>
 #include <ctype.h>
+#include <json.h>
 
 #include "util.h"
 #include "mysql.h"
+#include "config.h"
 
 #define VERSION "0.0.1"
+#define DEFAULT_MIGRATION_PATH "migrations/"
+
+static char *migration_path;
 
 void menu() {
-	printf("usage: ./migrator command\n");
+	printf("usage: ./bmig command\n");
 	printf("\n");
 	printf("    status\n");
 	printf("        see the status of all migrations\n");
@@ -32,7 +37,7 @@ void populate_local_mig(char **local_mig) {
 	DIR *dir;
 	struct dirent *directory;
 
-	dir = opendir("../");
+	dir = opendir(migration_path);
 
 	size_t i = 0;
 
@@ -107,6 +112,40 @@ int main(int argc, char **argv) {
 		return 0;
 	}
 
+	// read config file
+	char *config = read_config();
+
+	char *host = get_value(config, "host");
+	char *user = get_value(config, "user");
+	char *pass = get_value(config, "pass");
+	char *db = get_value(config, "db");
+
+	if (strlen(host) < 1) {
+		printf("host not found in config file\n");
+		return 1;
+	}
+
+	if (strlen(user) < 1) {
+		printf("user not found in config file\n");
+		return 1;
+	}
+
+	if (strlen(pass) < 1) {
+		printf("pass not found in config file\n");
+		return 1;
+	}
+
+	if (strlen(db) < 1) {
+		printf("db not found in config file\n");
+		return 1;
+	}
+
+	char *migs = get_value(config, "migs");
+
+	migration_path = strlen(migs) > 0 ? migs : DEFAULT_MIGRATION_PATH;
+
+	set_db_state(host, user, pass, db);
+
 	char *command = argv[1];
 
 	MYSQL *connection;
@@ -161,7 +200,8 @@ int main(int argc, char **argv) {
 		char timestamp[16];
 		get_timestamp(timestamp);
 
-		char full_name[1024] = "../";
+		char full_name[1024] = "";
+		strcat(full_name, migration_path);
 
 		// concat all the parts of the full mig name
 		strcat(full_name, timestamp);
@@ -191,7 +231,7 @@ int main(int argc, char **argv) {
 
 				// read the migration file
 				char path[1024] = "";
-				strcat(path, "../");
+				strcat(path, migration_path);
 				strcat(path, local_mig[i]);
 
 				char *mig = read_file(path);
@@ -249,7 +289,7 @@ int main(int argc, char **argv) {
 
 		// read the migration file
 		char path[1024] = "";
-		strcat(path, "../");
+		strcat(path, migration_path);
 		strcat(path, local_mig[last_mig]);
 
 		char *mig = read_file(path);

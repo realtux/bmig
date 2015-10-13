@@ -1,0 +1,7 @@
+{
+	"host": "10.0.0.10",
+	"user": "root",
+	"pass": "root",
+	"db": "apiowl",
+	"migs": ""
+}
