@@ -16,7 +16,7 @@
 static char *migration_path;
 
 void menu() {
-	printf("usage: ./bmig command\n");
+	printf("usage: bmig command\n");
 	printf("\n");
 	printf("    status\n");
 	printf("        see the status of all migrations\n");
