@@ -12,4 +12,3 @@ install:
 
 clean:
 	rm -f bmig
-	sudo rm -f /usr/local/bin/bmig
