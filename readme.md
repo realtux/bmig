@@ -4,37 +4,32 @@ bmig is a simple, clean, easy to use mysql migration manager.
 
 bmig uses the following directory structure:
 ```
-migrator/ <- binary is in this directory
-    src/
-    makefile
+migrations/ <- by default where new migrations are created
+config.json <- your config for bmig to access the right db
 ```
 
 make bmig
 ```
-cd migrator
 make
+sudo make install
 ```
 
 create a new migration
 ```
-cd migrator
-./migrator create mynewmigration
+bmig create mynewmigration
 ```
 
 check the migration status
 ```
-cd migrator
-./migrator status
+bmig status
 ```
 
 process all pending migrations
 ```
-cd migrator
-./migrator migrate
+bmig migrate
 ```
 
 rollback last migration
 ```
-cd migrator
-./migrator rollback
+bmig rollback
 ```
