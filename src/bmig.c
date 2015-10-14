@@ -191,7 +191,7 @@ int main(int argc, char **argv) {
 	populate_local_mig(local_mig);
 
 	// populate remote_mig with 0/1 flags on local -> remote
-	get_remote_status(connection, local_mig, &remote_mig);
+	get_remote_status(connection, local_mig, remote_mig);
 
 	mysql_close(connection);
 

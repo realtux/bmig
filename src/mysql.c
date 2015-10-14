@@ -27,6 +27,8 @@ THE SOFTWARE.
 #include <string.h>
 #include <mysql.h>
 
+#include "util.h"
+
 static char *host;
 static char *user;
 static char *pass;
@@ -68,13 +70,13 @@ MYSQL *get_mysql_conn() {
 	return connection;
 }
 
-void get_remote_status(MYSQL *connection, char *local_mig, int *remote_mig) {
+void get_remote_status(MYSQL *connection, char **local_mig, int *remote_mig) {
 	mysql_query(connection, "select * from zzzzzbmigmigrations");
 
 	MYSQL_RES *result = mysql_store_result(connection);
 	MYSQL_ROW row;
 
-	while (row = mysql_fetch_row(result)) {
+	while ((row = mysql_fetch_row(result))) {
 		int pos = in_array((char *)row[0], local_mig, sizeof(remote_mig));
 
 		if (pos > -1) {
