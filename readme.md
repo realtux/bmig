@@ -3,14 +3,19 @@
 bmig is a simple, clean, and blazing fast mysql migration manager written in c
 
 __install dependencies__
+
+__# ubuntu__
 ```
-# ubuntu
 sudo apt-get install libmysqlclient-dev libjson0-dev
+```
 
-# rhel
+__# rhel__
+```
 sudo yum install mysql-devel json-c-devel
+```
 
-# os x
+__# os x (using [Homebrew] (http://brew.sh))__
+```
 brew install gcc json-c mysql-connector-c
 ```
 
