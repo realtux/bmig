@@ -60,7 +60,7 @@ bmig rollback
   * some error checking
 
 ### special thanks
-corey edwards ([@cedwardsmedia](https://github.com/cedwardsmedia)) -- osx build procedures & testing
+corey edwards ([@cedwardsmedia](https://www.twitter.com/cedwardsmedia)) -- OS X build procedures & testing
 
 ### license
 bmig is available under the MIT License
