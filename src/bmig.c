@@ -63,6 +63,11 @@ void populate_local_mig(char **local_mig) {
 
 	dir = opendir(migration_path);
 
+	if (dir == NULL) {
+		printf("migrations folder not found\n\n");
+		exit(1);
+	}
+
 	size_t i = 0;
 
 	// construct local_mig full of .sql files
