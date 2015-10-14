@@ -271,6 +271,11 @@ int main(int argc, char **argv) {
 				char *up = malloc(mig_size + 1);
 				char *down = malloc(mig_size + 1);
 
+				if (up == NULL || down == NULL) {
+					printf("memory allocation error\n\n");
+					exit(1);
+				}
+
 				populate_up_down(mig, up, down);
 
 				// run the up
@@ -329,6 +334,11 @@ int main(int argc, char **argv) {
 
 		char *up = malloc(mig_size + 1);
 		char *down = malloc(mig_size + 1);
+
+		if (up == NULL || down == NULL) {
+			printf("memory allocation error\n\n");
+			exit(1);
+		}
 
 		populate_up_down(mig, up, down);
 
