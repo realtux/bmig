@@ -51,7 +51,7 @@ bmig rollback
 ```
 
 ### changelog
-0.0.1 (2015-10-12)
+0.0.1-rc1 (2015-10-12)
   * create new migrations
   * list migration status
   * migrate all
