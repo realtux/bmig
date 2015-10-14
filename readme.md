@@ -14,7 +14,7 @@ __# rhel__
 sudo yum install mysql-devel json-c-devel
 ```
 
-__# os x (using [Homebrew] (http://brew.sh))__
+__# os x (using [homebrew] (http://brew.sh))__
 ```
 brew install gcc json-c mysql-connector-c
 ```
@@ -51,7 +51,7 @@ bmig rollback
 ```
 
 ### changelog
-0.0.1 (2015-10-12)
+0.0.1-rc1 (2015-10-12)
   * create new migrations
   * list migration status
   * migrate all
@@ -60,7 +60,7 @@ bmig rollback
   * some error checking
 
 ### special thanks
-corey edwards ([@cedwardsmedia](https://www.twitter.com/cedwardsmedia)) -- OS X build procedures & testing
+corey edwards ([@cedwardsmedia](https://www.twitter.com/cedwardsmedia)) -- os x build procedures & testing
 
 ### license
 bmig is available under the MIT License
