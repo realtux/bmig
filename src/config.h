@@ -1,7 +1,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-char *read_config();
-char *get_value(char *json, char *key_name);
+char *read_config(void);
+char *get_value(const char *, const char *);
 
 #endif

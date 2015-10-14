@@ -39,7 +39,7 @@ THE SOFTWARE.
 
 static char *migration_path;
 
-void menu() {
+void menu(void) {
 	printf("usage: bmig command\n");
 	printf("\n");
 	printf("    status\n");
@@ -103,15 +103,17 @@ void populate_up_down(char *mig, char *up, char *down) {
 
 	down_start = pos >= 0 ? pos + 6 : -1;
 
+	int mig_length = strlen(mig);
+
 	// determine up end based on whether down is present
-	up_end = down_start >= 0 ? down_start - 7 : strlen(mig);
+	up_end = down_start >= 1 ? down_start - 7 : mig_length;
 
 	// determine down end based on whether up is present
-	down_end = down_start >= 0 ? strlen(mig) : -1;
+	down_end = down_start >= 0 ? mig_length : -1;
 
 	// load bodies
-	size_t x = 0;
-	size_t y = 0;
+	int x = 0;
+	int y = 0;
 
 	if (up_start >= 0) {
 		x = 0;
@@ -191,7 +193,7 @@ int main(int argc, char **argv) {
 	populate_local_mig(local_mig);
 
 	// populate remote_mig with 0/1 flags on local -> remote
-	get_remote_status(connection, local_mig, remote_mig);
+	get_remote_status(connection, (const char **)local_mig, remote_mig);
 
 	mysql_close(connection);
 
@@ -203,9 +205,9 @@ int main(int argc, char **argv) {
 			if (local_mig[i] == NULL) break;
 
 			if (remote_mig[i] == 1) {
-				printf("\e[0;32mup - \e[0;37m");
+				printf("\033[0;32mup - \033[0;37m");
 			} else {
-				printf("\e[0;31mdn - \e[0;37m");
+				printf("\033[0;31mdn - \033[0;37m");
 			}
 
 			printf("%s\n", local_mig[i]);
@@ -297,7 +299,7 @@ int main(int argc, char **argv) {
 
 	if (strcmp(command, "rollback") == 0) {
 		// rollback last migration
-		size_t last_mig = -1;
+		int last_mig = -1;
 
 		i = 0;
 		for (;;) {
@@ -343,6 +345,10 @@ int main(int argc, char **argv) {
 		mysql_close(connection);
 
 		printf("\rrolling back migration: %s -- done\n", local_mig[last_mig]);
+
+		free(mig);
+		free(up);
+		free(down);
 	}
 
 	printf("\n");

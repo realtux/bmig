@@ -29,12 +29,12 @@ THE SOFTWARE.
 
 #include "util.h"
 
-static char *host;
-static char *user;
-static char *pass;
-static char *db;
+static const char *host;
+static const char *user;
+static const char *pass;
+static const char *db;
 
-void set_db_state(char *h, char *u, char *p, char *d) {
+void set_db_state(const char *h, const char *u, const char *p, const char *d) {
 	host = h;
 	user = u;
 	pass = p;
@@ -48,7 +48,7 @@ void bmig_init(MYSQL *connection) {
 	mysql_query(connection, db);
 }
 
-MYSQL *get_mysql_conn() {
+MYSQL *get_mysql_conn(void) {
 	MYSQL *connection = mysql_init(NULL);
 
 	if (connection == NULL) {
@@ -70,7 +70,7 @@ MYSQL *get_mysql_conn() {
 	return connection;
 }
 
-void get_remote_status(MYSQL *connection, char **local_mig, int *remote_mig) {
+void get_remote_status(MYSQL *connection, const char **local_mig, int *remote_mig) {
 	mysql_query(connection, "select * from zzzzzbmigmigrations");
 
 	MYSQL_RES *result = mysql_store_result(connection);

@@ -1,9 +1,9 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-int in_array(char *value, char **array, size_t size);
-int cstring_cmp(const void *a, const void *b);
-void get_timestamp(char *buf);
-char *read_file(char *filename, long *mig_size);
+int in_array(const char *, const char **, size_t );
+int cstring_cmp(const void *, const void *);
+void get_timestamp(char *);
+char *read_file(const char *, long *);
 
 #endif

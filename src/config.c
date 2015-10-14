@@ -31,14 +31,14 @@ THE SOFTWARE.
 
 enum json_type type;
 
-char *read_config() {
+char *read_config(void) {
 	long config_size;
 	char *json = read_file("config.json", &config_size);
 
 	return json;
 }
 
-char *get_value(char *json, char *key_name) {
+char *get_value(const char *json, const char *key_name) {
 	json_object *jobj = json_tokener_parse(json);
 
 	json_object_object_foreach(jobj, key, val) {

@@ -27,7 +27,7 @@ THE SOFTWARE.
 #include <string.h>
 #include <time.h>
 
-int in_array(char *value, char **array, size_t size) {
+int in_array(const char *value, const char **array, size_t size) {
 	size_t i;
 
 	for (i = 0; i < size; ++i) {
@@ -58,7 +58,7 @@ void get_timestamp(char *buf) {
 	strftime(buf, 16, "%G%m%d%H%M%S", timeinfo);
 }
 
-char *read_file(char *filename, long *size) {
+char *read_file(const char *filename, long *size) {
 	FILE *f = fopen(filename, "rb");
 
 	if (f == NULL) {
