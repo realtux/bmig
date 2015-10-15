@@ -205,9 +205,9 @@ int main(int argc, char **argv) {
 			if (local_mig[i] == NULL) break;
 
 			if (remote_mig[i] == 1) {
-				printf("\033[0;32mup - \033[0;37m");
+				printf("\033[0;32mup - \033[0m");
 			} else {
-				printf("\033[0;31mdn - \033[0;37m");
+				printf("\033[0;31mdn - \033[0m");
 			}
 
 			printf("%s\n", local_mig[i]);
