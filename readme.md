@@ -16,7 +16,7 @@ sudo yum install mysql-devel json-c-devel
 
 __# os x (using [homebrew] (http://brew.sh))__
 ```
-brew install gcc json-c mysql-connector-c
+brew install gcc json-c mysql-connector-c pkg-config
 ```
 
 __clone & compile__
