@@ -13,7 +13,6 @@ migrator: clean
 		-std=c99 \
 		-Wstrict-prototypes \
 		-Wno-missing-field-initializers \
-		-Wstrict-aliasing=3 \
 		-fstrict-aliasing \
 		-Warray-bounds
 

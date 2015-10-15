@@ -72,12 +72,12 @@ void populate_local_mig(char **local_mig) {
 
 	// construct local_mig full of .sql files
 	while ((directory = readdir(dir)) != NULL) {
-		char *dir_name = directory->d_name;
-		size_t len = strlen(dir_name);
+		char *file_name = directory->d_name;
+		size_t len = strlen(file_name);
 
 		// add only .sql files to the local_mig
-		if (strcmp(dir_name + len - 4, ".sql") == 0) {
-			local_mig[i] = dir_name;
+		if (len > 4 && strcmp(file_name + len - 4, ".sql") == 0) {
+			local_mig[i] = file_name;
 			++i;
 		}
 	}
