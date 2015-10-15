@@ -6,12 +6,12 @@ __install dependencies__
 
 __# ubuntu__
 ```
-sudo apt-get install libmysqlclient-dev libjson0-dev
+sudo apt-get install gcc libmysqlclient-dev libjson0-dev
 ```
 
 __# rhel__
 ```
-sudo yum install mysql-devel json-c-devel
+sudo yum install gcc mysql-devel json-c-devel
 ```
 
 __# os x (using [homebrew] (http://brew.sh))__
