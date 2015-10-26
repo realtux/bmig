@@ -1,8 +1,8 @@
-## bmig 0.0.1 by b
+# bmig 0.0.1 by [b](https://github.com/ebrian)
 
 bmig is a simple, clean, blazing fast mysql migration manager written in c
 
-__install dependencies__
+### install dependencies
 
 __# ubuntu__
 ```
@@ -19,36 +19,57 @@ __# os x (using [homebrew] (http://brew.sh))__
 brew install gcc json-c mysql-connector-c pkg-config
 ```
 
-__clone & compile__
+---
+
+### clone & compile
+
 ```
 git clone https://github.com/ebrian/bmig
 cd bmig
 make
 sudo make install
 ```
+
+---
+
 ### bmig commands
 
-##### important: to use bmig, you must be in the folder with your config.json file
+__general bmig guidelines__
+- to use bmig, you must be in the folder with your config.json file.
 
-create a new migration
-```
-bmig create mynewmigration
-```
+---
 
-check the migration status
+__create a new migration__
+```
+bmig create [name]
+```
+this will create a new file in the format of `[timestamp]-[name].sql` in the migrations folder or the folder you've configured in your `config.json`. it will contain an `up:` and `down:` label. there must be a newline after each label and a newline after each command you write. if you don't have an `up` or a `down`, you can leave the label out of the migration, or leave it blank; either way is fine.
+
+---
+
+__check the migration status__
 ```
 bmig status
 ```
+this will check each migration in the migrations folder or the folder you've configured in your `config.json` and compare that against what is in the `zzzzzbmigmigrations` table that `bmig` will create in the beginning. migrations that are present in the table will be marked as `up` and migrations that are not will be marked as `dn`.
 
-process all pending migrations
+---
+
+__process all pending migrations__
 ```
 bmig migrate
 ```
+this will run each migration marked as `dn` from `bmig status` and execute the contents from the `up:` label located in that migration. if multiple migrations are marked as `dn`, they will be run sequentially.
+
+---
 
 rollback last migration
 ```
 bmig rollback
 ```
+this will rollback each migration marked as `up` from `bmig status` and execute the contents from the `down:` label located in that migration. only the most recently migration will be rolled back.
+
+---
 
 ### changelog
 0.1.0 (2015-10-26)
@@ -73,8 +94,12 @@ bmig rollback
   * config.json supported
   * some error checking
 
+---
+
 ### special thanks
 corey edwards ([@cedwardsmedia](https://www.twitter.com/cedwardsmedia)) -- os x build procedures & testing
+
+---
 
 ### license
 bmig is available under the MIT License
