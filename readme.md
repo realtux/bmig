@@ -1,6 +1,6 @@
 ## bmig 0.0.1 by b
 
-bmig is a simple, clean, and blazing fast mysql migration manager written in c
+bmig is a simple, clean, blazing fast mysql migration manager written in c
 
 __install dependencies__
 
@@ -51,6 +51,20 @@ bmig rollback
 ```
 
 ### changelog
+0.1.0 (2015-10-26)
+  * initial release
+  * version bump
+  * docs clean up
+
+0.0.1-rc3 (2015-10-26)
+  * migrations commands run in their own connection
+
+0.0.1-rc2 (2015-10-14)
+  * adhering to stricter compiler warnings
+  * additional stability fixes
+  * os x support
+  * fix bug with terminal color not resetting
+
 0.0.1-rc1 (2015-10-12)
   * create new migrations
   * list migration status
