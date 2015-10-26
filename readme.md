@@ -63,7 +63,7 @@ this will run each migration marked as `dn` from `bmig status` and execute the c
 
 ---
 
-rollback last migration
+__rollback last migration__
 ```
 bmig rollback
 ```
