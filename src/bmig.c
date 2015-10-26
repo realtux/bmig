@@ -258,7 +258,7 @@ int main(int argc, char **argv) {
 			if (local_mig[i] == NULL) break;
 
 			if (remote_mig[i] == 0) {
-				printf("running migration: %s", local_mig[i]);
+				printf("running migration: %s\n", local_mig[i]);
 
 				// read the migration file
 				char path[1024] = "";
@@ -278,10 +278,7 @@ int main(int argc, char **argv) {
 
 				populate_up_down(mig, up, down);
 
-				// run the up
-				connection = get_mysql_conn();
-				mysql_query(connection, up);
-				mysql_close(connection);
+				run_migs(up, mig_size);
 
 				char update_query[100] = "insert into zzzzzbmigmigrations values('";
 				strcat(update_query, local_mig[i]);
@@ -291,7 +288,7 @@ int main(int argc, char **argv) {
 				mysql_query(connection, update_query);
 				mysql_close(connection);
 
-				printf("\rrunning migration: %s -- done\n", local_mig[i]);
+				printf("running migration: %s \033[0;32m-- done \033[0m\n", local_mig[i]);
 
 				free(mig);
 				free(up);
@@ -322,7 +319,7 @@ int main(int argc, char **argv) {
 			return 1;
 		}
 
-		printf("rolling back migration: %s", local_mig[last_mig]);
+		printf("rolling back migration: %s\n", local_mig[last_mig]);
 
 		// read the migration file
 		char path[1024] = "";
@@ -342,9 +339,7 @@ int main(int argc, char **argv) {
 
 		populate_up_down(mig, up, down);
 
-		connection = get_mysql_conn();
-		mysql_query(connection, down);
-		mysql_close(connection);
+		run_migs(down, mig_size);
 
 		char update_query[100] = "delete from zzzzzbmigmigrations where name='";
 		strcat(update_query, local_mig[last_mig]);
@@ -354,7 +349,7 @@ int main(int argc, char **argv) {
 		mysql_query(connection, update_query);
 		mysql_close(connection);
 
-		printf("\rrolling back migration: %s -- done\n", local_mig[last_mig]);
+		printf("rolling back migration: %s \033[0;32m-- done \033[0m\n", local_mig[last_mig]);
 
 		free(mig);
 		free(up);
