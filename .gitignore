@@ -1,3 +1,4 @@
 bmig
 config.json
 migrations/*.sql
+www/.idea
