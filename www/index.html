@@ -5,7 +5,7 @@
 
     <meta name="KEYWORDS" content="mysql migrations manager, database migrations, mysql database migrations" />
     <meta name="DESCRIPTION" content="bmig is a simple, clean, blazing fast language agnostic database migrations manager" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=835">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
     <link href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.1/css/materialize.min.css" rel="stylesheet" media="screen">
@@ -72,8 +72,8 @@
             </div>
             <div class="col s8 align-right menu">
                 <a href="/">home</a>
-                <a href="/">install</a>
-                <a href="/">get started</a>
+                <a href="#" onclick="$('.installation').slideToggle()">install</a>
+                <a href="#" onclick="$('.installation').slideToggle()">get started</a>
                 <a href="/">docs</a>
                 <a href="https://github.com/ebrian/bmig" target="_blank">github</a>
             </div>
@@ -91,19 +91,125 @@
 
                 <h3 class="f500 white-text" style="margin-top: 50px;">
                     <span class="f700">bmig</span>
-                    is a simple, clean, blazing fast language agnostic database migrations manager
+                    is a simple, clean, blazing fast, language agnostic mysql migrations manager
                 </h3>
 
                 <div style="margin-top: 60px;">
-                    <button type="button" class="waves-effect waves-blue btn btn-larger white black-text">Install</button>
-                    <button type="button" class="waves-effect waves-blue btn btn-larger white black-text">Get Started</button>
+                    <button
+                        type="button"
+                        class="waves-effect waves-blue btn btn-larger blue lighten-2"
+                        onclick="$('.installation').slideToggle()">Install</button>
+                    <button
+                        type="button"
+                        class="waves-effect waves-blue btn btn-larger white black-text"
+                        onclick="$('.installation').slideToggle()">Get Started</button>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="installation z-depth-1" style="display: none; background: #fff;">
+        <div class="container" style="padding: 30px 15px;">
+            <div class="row">
+                <div class="col s6 align-center">
+                    <h5 class="f500">install bmig</h5>
 
-                <i class="material-icons white-text" style="font-size: 350px; margin-top: 40px;">restore</i>
+<pre class="grey lighten-4 align-left" style="padding: 10px;">
+<span class="f700"># ubuntu dependencies</span>
+sudo apt-get install gcc libmysqlclient-dev libjson0-dev
+</pre>
+<pre class="grey lighten-4 align-left" style="padding: 10px;">
+<span class="f700"># rhel dependencies</span>
+sudo yum install gcc mysql-devel json-c-devel
+</pre>
+<pre class="grey lighten-4 align-left" style="padding: 10px;">
+<span class="f700"># os x dependencies</span>
+brew install gcc json-c mysql-connector-c pkg-config
+</pre>
+<pre class="grey lighten-4 align-left" style="padding: 10px;">
+<span class="f700"># clone & compile</span>
+git clone https://github.com/ebrian/bmig
+cd bmig
+make
+sudo make install
+</pre>
+                </div>
+                <div class="col s6 align-center">
+                    <h5 class="f500">write your first migration</h5>
+
+<pre class="grey lighten-4 align-left" style="padding: 10px;">
+<span class="f700"># create the migration</span>
+bmig create bmig-rocks-field
+</pre>
+<pre class="grey lighten-4 align-left" style="padding: 10px;">
+<span class="f700"># nano migrations/20151025112233-bmig-rocks-field.sql</span>
+up:
+alter table apps add bmig_rocks tinyint default 1;
+
+down:
+alter table apps drop column bmig_rocks;
+</pre>
+<pre class="grey lighten-4 align-left" style="padding: 10px;">
+<span class="f700"># run the migration</span>
+bmig migrate
+</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col s12 align-center">
+                <i class="material-icons white-text" style="font-size: 350px; margin-top: 10px;">restore</i>
             </div>
         </div>
     </div>
 </main>
 <footer></footer>
+<div id="install" class="modal align-left">
+    <div class="modal-content">
+        <h3 class="f100">Install</h3>
+
+        <h5>
+            On <span class="f700">Linux</span> or <span class="f700">OS X</span>, the quickest way to get rocking and rolling is like so:
+        </h5>
+
+<pre class="light-blue darken-2 white-text" style="padding: 10px;">
+$ curl -sSf https://bmig.bri.io/install.sh | sh
+</pre>
+
+        <hr />
+
+
+
+        <h5>
+            As always, there is always the compile it yourself method:
+        </h5>
+
+<pre class="light-blue darken-2 white-text" style="padding: 10px;">
+# ubuntu dependencies
+sudo apt-get install gcc libmysqlclient-dev libjson0-dev
+</pre>
+<pre class="light-blue darken-2 white-text" style="padding: 10px;">
+# rhel dependencies
+sudo yum install gcc mysql-devel json-c-devel
+</pre>
+<pre class="light-blue darken-2 white-text" style="padding: 10px;">
+# os x dependencies
+brew install gcc json-c mysql-connector-c pkg-config
+</pre>
+<pre class="light-blue darken-2 white-text" style="padding: 10px;">
+# clone & compile
+git clone https://github.com/ebrian/bmig
+cd bmig
+make
+sudo make install
+</pre>
+    </div>
+    <div class="modal-footer">
+        <button
+            type="button"
+            class="modal-action modal-close waves-effect waves-yellow btn-flat">Awesome</button>
+    </div>
+</div>
 </body>
 </html>
