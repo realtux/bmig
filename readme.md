@@ -21,13 +21,21 @@ brew install gcc json-c mysql-connector-c pkg-config
 
 ---
 
-### clone & compile
+### clone & compile (linux & os x)
 
 ```
 git clone https://github.com/ebrian/bmig
 cd bmig
 make
 sudo make install
+```
+
+### clone & run (windows)
+
+```
+git clone https://github.com/ebrian/bmig
+cd bmig\dist\windows-x86
+bmig.exe
 ```
 
 ---
