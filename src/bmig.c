@@ -34,10 +34,13 @@ THE SOFTWARE.
 #include "mysql.h"
 #include "config.h"
 
-#define VERSION "0.0.1"
+#define VERSION "0.2.0"
 #define DEFAULT_MIGRATION_PATH "migrations/"
 
 static char *migration_path;
+
+int flag_transaction = 0;
+int flag_bail = 0;
 
 void menu(void) {
 	printf("usage: bmig command\n");
@@ -50,6 +53,12 @@ void menu(void) {
 	printf("\n");
 	printf("    migrate\n");
 	printf("        run all available migrations\n");
+	printf("\n");
+	printf("        -t    wrap each .sql in a transaction, use with -b\n");
+	printf("              to avoid an out of sequence migration\n");
+	printf("\n");
+	printf("        -b    upon migration failure, don't proceed, use\n");
+	printf("              with -t to avoid a half completed migration\n");
 	printf("\n");
 	printf("    rollback\n");
 	printf("        rollback the last migration\n");
@@ -72,7 +81,12 @@ void populate_local_mig(char **local_mig) {
 
 	// construct local_mig full of .sql files
 	while ((directory = readdir(dir)) != NULL) {
-		char *file_name = directory->d_name;
+		int d_name_len = strlen(directory->d_name);
+
+		char *file_name = malloc(sizeof(char *) * d_name_len + 1);
+
+		strcpy(file_name, (const char *)directory->d_name);
+
 		size_t len = strlen(file_name);
 
 		// add only .sql files to the local_mig
@@ -83,6 +97,10 @@ void populate_local_mig(char **local_mig) {
 	}
 
 	qsort(local_mig, i, sizeof(char *), cstring_cmp);
+
+	local_mig[i + 1] = '\0';
+
+	closedir(dir);
 }
 
 void populate_up_down(char *mig, char *up, char *down) {
@@ -134,6 +152,30 @@ void populate_up_down(char *mig, char *up, char *down) {
 	}
 }
 
+void parse_flags(int argc, const char **argv) {
+	// check each flag
+	int i;
+	for (i = 2; i < argc; ++i) {
+		// flags must begin with -
+		if (*argv[i] != '-') continue;
+
+		// check each character of each flag for potential matches
+		int flag_len = strlen(argv[i]);
+
+		int x;
+		for (x = 1; x < flag_len; ++x) {
+			switch (argv[i][x]) {
+				case 't':
+					flag_transaction = 1;
+					break;
+				case 'b':
+					flag_bail = 1;
+					break;
+			}
+		}
+	}
+}
+
 int main(int argc, char **argv) {
 	printf("bmig version %s\n", VERSION);
 
@@ -142,6 +184,8 @@ int main(int argc, char **argv) {
 		menu();
 		return 0;
 	}
+
+	parse_flags(argc, (const char **)argv);
 
 	// read config file
 	char *config = read_config();
@@ -201,7 +245,7 @@ int main(int argc, char **argv) {
 	if (strcmp(command, "status") == 0) {
 		// check local_mig against remote_mig for differences
 		i = 0;
-		for (;;) {
+		infinite {
 			if (local_mig[i] == NULL) break;
 
 			if (remote_mig[i] == 1) {
@@ -254,7 +298,7 @@ int main(int argc, char **argv) {
 	if (strcmp(command, "migrate") == 0) {
 		// find and run all migrations
 		i = 0;
-		for (;;) {
+		infinite {
 			if (local_mig[i] == NULL) break;
 
 			if (remote_mig[i] == 0) {
@@ -304,7 +348,7 @@ int main(int argc, char **argv) {
 		int last_mig = -1;
 
 		i = 0;
-		for (;;) {
+		infinite {
 			if (local_mig[i] == NULL) break;
 
 			if (remote_mig[i] == 1) {
@@ -354,6 +398,14 @@ int main(int argc, char **argv) {
 		free(mig);
 		free(up);
 		free(down);
+	}
+
+	// clean up local mig pointers
+	int j;
+	for (j = 0;; ++j) {
+		if (local_mig[j] == '\0') break;
+
+		free(local_mig[j]);
 	}
 
 	printf("\n");

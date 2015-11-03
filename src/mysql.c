@@ -34,6 +34,9 @@ static const char *user;
 static const char *pass;
 static const char *db;
 
+extern int flag_transaction;
+extern int flag_bail;
+
 void set_db_state(const char *h, const char *u, const char *p, const char *d) {
 	host = h;
 	user = u;
@@ -76,12 +79,12 @@ void get_remote_status(MYSQL *connection, const char **local_mig, int *remote_mi
 	MYSQL_RES *result = mysql_store_result(connection);
 	MYSQL_ROW row;
 
-	while ((row = mysql_fetch_row(result))) {
-		int pos = in_array((char *)row[0], local_mig, sizeof(remote_mig));
+	size_t row_count = mysql_num_rows(result);
 
-		if (pos > -1) {
-			remote_mig[pos] = 1;
-		}
+	while ((row = mysql_fetch_row(result))) {
+		int pos = in_array((char *)row[0], local_mig, row_count);
+
+		if (pos > -1) remote_mig[pos] = 1;
 	}
 
 	mysql_free_result(result);
@@ -91,6 +94,11 @@ void run_migs(const char *mig, long mig_size) {
 	MYSQL *connection;
 
 	char *cur_command = malloc(mig_size + 1);
+
+	if (cur_command == NULL) {
+		printf("memory allocation error\n\n");
+		exit(1);
+	}
 
 	int c;
 	int x = 0;

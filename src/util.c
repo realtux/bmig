@@ -74,6 +74,12 @@ char *read_file(const char *filename, long *size) {
 	*size = fsize;
 
 	char *string = malloc(fsize + 1);
+
+	if (string == NULL) {
+		printf("memory allocation error\n\n");
+		exit(1);
+	}
+
 	fread(string, fsize, 1, f);
 
 	fclose(f);

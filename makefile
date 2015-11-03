@@ -6,15 +6,18 @@ migrator: clean
 		-o bmig \
 		`mysql_config --cflags --libs` \
 		`pkg-config --cflags --libs json-c` \
+		-std=c99 \
 		-Wall \
 		-Wextra \
 		-Wundef \
-		-pedantic \
-		-std=c99 \
+		-Wfloat-equal \
+		-Wpointer-arith \
+		-Wcast-align \
 		-Wstrict-prototypes \
 		-Wno-missing-field-initializers \
-		-fstrict-aliasing \
-		-Warray-bounds
+		-Warray-bounds \
+		-pedantic \
+		-fstrict-aliasing
 
 install:
 	sudo cp bmig /usr/local/bin
