@@ -83,7 +83,7 @@ void populate_local_mig(char **local_mig) {
 	while ((directory = readdir(dir)) != NULL) {
 		int d_name_len = strlen(directory->d_name);
 
-		char *file_name = malloc(sizeof(char *) * d_name_len + 1);
+		char *file_name = malloc(sizeof(char) * (d_name_len + 1));
 
 		strcpy(file_name, (const char *)directory->d_name);
 
