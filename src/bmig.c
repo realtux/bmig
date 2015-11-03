@@ -103,8 +103,8 @@ void populate_local_mig(char ***local_mig) {
 
 	qsort(*local_mig, i, sizeof(char *), cstring_cmp);
 
-	// shrink the memory to exact size
-	*local_mig = realloc(*local_mig, sizeof(char *) * i);
+	// set last element null
+	(*local_mig)[i] = NULL;
 
 	closedir(dir);
 }
