@@ -3,7 +3,8 @@
 
 #define infinite for(;;)
 
-int in_array(const char *, const char **, size_t );
+int array_size(const char **);
+int in_array(const char *, const char **);
 int cstring_cmp(const void *, const void *);
 void get_timestamp(char *);
 char *read_file(const char *, long *);

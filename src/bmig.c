@@ -65,7 +65,7 @@ void menu(void) {
 	printf("\n");
 }
 
-void populate_local_mig(char **local_mig) {
+void populate_local_mig(char ***local_mig) {
 	// open parent dir
 	DIR *dir;
 	struct dirent *directory;
@@ -91,14 +91,20 @@ void populate_local_mig(char **local_mig) {
 
 		// add only .sql files to the local_mig
 		if (len > 4 && strcmp(file_name + len - 4, ".sql") == 0) {
-			local_mig[i] = file_name;
+			// insert the file name into place
+			(*local_mig)[i] = malloc(sizeof(char) * (len + 1));
+			strcpy((*local_mig)[i], file_name);
 			++i;
+
+			// expand the memory to fit one more
+			*local_mig = realloc(*local_mig, sizeof(char *) * (i + 1));
 		}
 	}
 
-	qsort(local_mig, i, sizeof(char *), cstring_cmp);
+	qsort(*local_mig, i, sizeof(char *), cstring_cmp);
 
-	local_mig[i + 1] = '\0';
+	// shrink the memory to exact size
+	*local_mig = realloc(*local_mig, sizeof(char *) * i);
 
 	closedir(dir);
 }
@@ -230,11 +236,11 @@ int main(int argc, char **argv) {
 	size_t i = 0;
 
 	// store parallel arrays for local/remote comparison
-	char *local_mig[10000];
+	char **local_mig = malloc(sizeof(char *) * 1);
 	int *remote_mig;
 
 	// populate local_mig from fs
-	populate_local_mig(local_mig);
+	populate_local_mig(&local_mig);
 
 	// populate remote_mig with 0/1 flags on local -> remote
 	get_remote_status(connection, (const char **)local_mig, &remote_mig);
@@ -405,10 +411,11 @@ int main(int argc, char **argv) {
 	// clean up local mig pointers
 	int j;
 	for (j = 0;; ++j) {
-		if (local_mig[j] == '\0') break;
+		if (local_mig[j] == NULL) break;
 
 		free(local_mig[j]);
 	}
+	free(local_mig);
 
 	printf("\n");
 	return 0;

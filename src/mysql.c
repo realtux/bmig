@@ -91,7 +91,7 @@ void get_remote_status(MYSQL *connection, const char **local_mig, int **remote_m
 
 	// check if remote mig exists in local folder, flag as 1 if so
 	while ((row = mysql_fetch_row(result))) {
-		int pos = in_array((char *)row[0], local_mig, row_count);
+		int pos = in_array((char *)row[0], local_mig);
 
 		if (pos > -1) (*remote_mig)[pos] = 1;
 	}

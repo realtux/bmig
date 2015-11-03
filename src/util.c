@@ -27,9 +27,18 @@ THE SOFTWARE.
 #include <string.h>
 #include <time.h>
 
-int in_array(const char *value, const char **array, size_t size) {
-	size_t i;
+int array_size(const char **array) {
+	int i = 0;
 
+	while (array[i] != NULL) ++i;
+
+	return i;
+}
+
+int in_array(const char *value, const char **array) {
+	int size = array_size(array);
+
+	int i;
 	for (i = 0; i < size; ++i) {
 		if (array[i] == NULL) return -1;
 
