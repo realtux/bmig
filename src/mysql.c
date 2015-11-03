@@ -73,7 +73,7 @@ MYSQL *get_mysql_conn(void) {
 	return connection;
 }
 
-void get_remote_status(MYSQL *connection, const char **local_mig, int *remote_mig) {
+void get_remote_status(MYSQL *connection, const char **local_mig, int **remote_mig) {
 	mysql_query(connection, "select * from zzzzzbmigmigrations");
 
 	MYSQL_RES *result = mysql_store_result(connection);
@@ -81,10 +81,12 @@ void get_remote_status(MYSQL *connection, const char **local_mig, int *remote_mi
 
 	size_t row_count = mysql_num_rows(result);
 
+	*remote_mig = calloc(row_count, sizeof(int));
+
 	while ((row = mysql_fetch_row(result))) {
 		int pos = in_array((char *)row[0], local_mig, row_count);
 
-		if (pos > -1) remote_mig[pos] = 1;
+		if (pos > -1) (*remote_mig)[pos] = 1;
 	}
 
 	mysql_free_result(result);

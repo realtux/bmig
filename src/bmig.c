@@ -231,13 +231,13 @@ int main(int argc, char **argv) {
 
 	// store parallel arrays for local/remote comparison
 	char *local_mig[10000];
-	int remote_mig[10000];
+	int *remote_mig;
 
 	// populate local_mig from fs
 	populate_local_mig(local_mig);
 
 	// populate remote_mig with 0/1 flags on local -> remote
-	get_remote_status(connection, (const char **)local_mig, remote_mig);
+	get_remote_status(connection, (const char **)local_mig, &remote_mig);
 
 	mysql_close(connection);
 
@@ -399,6 +399,8 @@ int main(int argc, char **argv) {
 		free(up);
 		free(down);
 	}
+
+	free(remote_mig);
 
 	// clean up local mig pointers
 	int j;
