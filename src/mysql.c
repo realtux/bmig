@@ -81,8 +81,15 @@ void get_remote_status(MYSQL *connection, const char **local_mig, int **remote_m
 
 	size_t row_count = mysql_num_rows(result);
 
+	// allocate memory to fit total records in the db migrations, zero init
 	*remote_mig = calloc(row_count, sizeof(int));
 
+	if (*remote_mig == NULL) {
+		printf("memory allocation error\n\n");
+		exit(1);
+	}
+
+	// check if remote mig exists in local folder, flag as 1 if so
 	while ((row = mysql_fetch_row(result))) {
 		int pos = in_array((char *)row[0], local_mig, row_count);
 
