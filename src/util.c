@@ -22,9 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ***/
 
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 #include <time.h>
 
 int array_size(const char **array) {
@@ -96,4 +98,12 @@ char *read_file(const char *filename, long *size) {
 	string[fsize] = 0;
 
 	return string;
+}
+
+void make_migrations_dir(void) {
+	if (mkdir("migrations/", EEXIST) == -1) {
+		printf("migrations folder exists already, cannot create\n");
+	} else {
+		printf("migrations folder created\n");
+	}
 }

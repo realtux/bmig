@@ -45,6 +45,9 @@ int flag_bail = 0;
 void menu(void) {
 	printf("usage: bmig command\n");
 	printf("\n");
+	printf("    init\n");
+	printf("        create the initial bmig structure and config\n");
+	printf("\n");
 	printf("    status\n");
 	printf("        see the status of all migrations\n");
 	printf("\n");
@@ -195,6 +198,98 @@ int main(int argc, char **argv) {
 
 	parse_flags(argc, (const char **)argv);
 
+	char *command = argv[1];
+
+	// init if necessary
+	if (strcmp(command, "init") == 0) {
+		printf("beginning init process...\n");
+
+		// check for config.json file
+		FILE *config = fopen("config.json", "r");
+
+		if (config == NULL) {
+			char in_host[100];
+			char in_user[100];
+			char in_pass[100];
+			char in_db[100];
+
+			printf("\n");
+
+			// collect data
+			printf("host [localhost]: ");
+			fgets(in_host, 100, stdin);
+
+			printf("db user [root]: ");
+			fgets(in_user, 100, stdin);
+
+			printf("db password [root]: ");
+			fgets(in_pass, 100, stdin);
+
+			needdb:
+			printf("db name: ");
+			fgets(in_db, 100, stdin);
+
+			if (strcmp(in_db, "\n") == 0) {
+				printf("please provide a db name\n");
+				goto needdb;
+			}
+
+			// strip \n
+			char *pos;
+			if ((pos = strchr(in_host, '\n')) != NULL) *pos = '\0';
+			if ((pos = strchr(in_user, '\n')) != NULL) *pos = '\0';
+			if ((pos = strchr(in_pass, '\n')) != NULL) *pos = '\0';
+			if ((pos = strchr(in_db, '\n')) != NULL) *pos = '\0';
+
+			// apply defaults, if applicable
+			if (strcmp(in_host, "") == 0) {
+				strcpy(in_host, "localhost");
+			}
+
+			if (strcmp(in_user, "") == 0) {
+				strcpy(in_user, "root");
+			}
+
+			if (strcmp(in_pass, "") == 0) {
+				strcpy(in_pass, "root");
+			}
+
+			printf("host: --%s--\n", in_host);
+			printf("db user: --%s--\n", in_user);
+			printf("db password: --%s--\n", in_pass);
+			printf("db name: --%s--\n", in_db);
+
+			// create the config file
+			char template[450] = "{\n";
+			strcat(template, "\t\"host\": \"");
+			strcat(template, in_host);
+			strcat(template, "\",\n");
+			strcat(template, "\t\"user\": \"");
+			strcat(template, in_user);
+			strcat(template, "\",\n");
+			strcat(template, "\t\"pass\": \"");
+			strcat(template, in_pass);
+			strcat(template, "\",\n");
+			strcat(template, "\t\"db\": \"");
+			strcat(template, in_db);
+			strcat(template, "\",\n");
+			strcat(template, "\t\"migs\": \"\"\n}");
+
+			FILE *file = fopen("config.json", "ab+");
+			fwrite(template, 1, sizeof(template), file);
+			fclose(file);
+
+			printf("created config.json file\n");
+		} else {
+			printf("config.json exists already, cannot create\n");
+		}
+
+		// check for migrations directory
+		make_migrations_dir();
+
+		exit(0);
+	}
+
 	// read config file
 	char *config = read_config();
 
@@ -228,8 +323,6 @@ int main(int argc, char **argv) {
 	migration_path = strlen(migs) > 0 ? migs : DEFAULT_MIGRATION_PATH;
 
 	set_db_state(host, user, pass, db);
-
-	char *command = argv[1];
 
 	MYSQL *connection;
 
