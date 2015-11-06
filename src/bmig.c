@@ -34,7 +34,7 @@ THE SOFTWARE.
 #include "mysql.h"
 #include "config.h"
 
-#define VERSION "0.2.0"
+#define VERSION "0.3.0"
 #define DEFAULT_MIGRATION_PATH "migrations/"
 
 static char *migration_path;
