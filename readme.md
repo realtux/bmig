@@ -47,6 +47,14 @@ __general bmig guidelines__
 
 ---
 
+__initialize bmig__
+```
+bmig init
+```
+this will ask you a few questions and create a `config.json` for you such that there isn't one already in the folder. it will also attempt to create the `migrations/` folder.
+
+---
+
 __create a new migration__
 ```
 bmig create [name]
@@ -116,7 +124,9 @@ __0.0.1-rc1__ -- 2015-10-12
 
 ### special thanks
 ryan ferons ([@rferons](https://github.com/rferons)) -- continued moral support
+
 shannon warren ([@w2pc](https://github.com/w2pc)) -- for testing my products even if they suck
+
 corey edwards ([@cedwardsmedia](https://www.twitter.com/cedwardsmedia)) -- os x build procedures & testing
 
 ---
