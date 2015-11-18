@@ -256,11 +256,6 @@ int main(int argc, char **argv) {
 				strcpy(in_pass, "root");
 			}
 
-			printf("host: --%s--\n", in_host);
-			printf("db user: --%s--\n", in_user);
-			printf("db password: --%s--\n", in_pass);
-			printf("db name: --%s--\n", in_db);
-
 			// create the config file
 			char template[450] = "{\n";
 			strcat(template, "\t\"host\": \"");
