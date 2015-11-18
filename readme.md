@@ -1,4 +1,4 @@
-# bmig 0.3.0 by [b](https://github.com/ebrian)
+# bmig 0.3.1 by [b](https://github.com/ebrian)
 
 bmig is a simple, clean, blazing fast mysql migration manager written in c
 
@@ -80,6 +80,16 @@ this will rollback each migration marked as `up` from `bmig status` and execute 
 ---
 
 ### changelog
+__0.3.1__ -- 2015-11-18
+  * fixed instability relating to overflown remote mig
+
+__0.3.0__ -- 2015-11-08
+  * initialization script
+
+__0.2.0__ -- 2015-11-07
+  * stability fixes
+  * windows support
+
 __0.1.0__ -- 2015-10-26
   * initial release
   * version bump
@@ -105,6 +115,8 @@ __0.0.1-rc1__ -- 2015-10-12
 ---
 
 ### special thanks
+ryan ferons ([@rferons](https://github.com/rferons)) -- continued moral support
+shannon warren ([@w2pc](https://github.com/w2pc)) -- for testing my products even if they suck
 corey edwards ([@cedwardsmedia](https://www.twitter.com/cedwardsmedia)) -- os x build procedures & testing
 
 ---

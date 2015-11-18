@@ -34,7 +34,7 @@ THE SOFTWARE.
 #include "mysql.h"
 #include "config.h"
 
-#define VERSION "0.3.0"
+#define VERSION "0.3.1"
 #define DEFAULT_MIGRATION_PATH "migrations/"
 
 static char *migration_path;
@@ -68,7 +68,7 @@ void menu(void) {
 	printf("\n");
 }
 
-char **populate_local_mig(char **local_mig) {
+char **populate_local_mig(char **local_mig, int *local_mig_count) {
 	// open parent dir
 	DIR *dir;
 	struct dirent *directory;
@@ -110,6 +110,8 @@ char **populate_local_mig(char **local_mig) {
 	local_mig[i] = NULL;
 
 	closedir(dir);
+
+	*local_mig_count = i;
 
 	return local_mig;
 }
@@ -335,10 +337,11 @@ int main(int argc, char **argv) {
 	int *remote_mig;
 
 	// populate local_mig from fs
-	local_mig = populate_local_mig(local_mig);
+	int local_mig_count;
+	local_mig = populate_local_mig(local_mig, &local_mig_count);
 
 	// populate remote_mig with 0/1 flags on local -> remote
-	get_remote_status(connection, (const char **)local_mig, &remote_mig);
+	get_remote_status(connection, (const char **)local_mig, local_mig_count, &remote_mig);
 
 	mysql_close(connection);
 

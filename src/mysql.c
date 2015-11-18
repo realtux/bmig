@@ -73,16 +73,14 @@ MYSQL *get_mysql_conn(void) {
 	return connection;
 }
 
-void get_remote_status(MYSQL *connection, const char **local_mig, int **remote_mig) {
+void get_remote_status(MYSQL *connection, const char **local_mig, int local_mig_count, int **remote_mig) {
 	mysql_query(connection, "select * from zzzzzbmigmigrations");
 
 	MYSQL_RES *result = mysql_store_result(connection);
 	MYSQL_ROW row;
 
-	size_t row_count = mysql_num_rows(result);
-
 	// allocate memory to fit total records in the db migrations, zero init
-	*remote_mig = calloc(row_count, sizeof(int));
+	*remote_mig = calloc(local_mig_count, sizeof(int) * local_mig_count);
 
 	if (*remote_mig == NULL) {
 		printf("memory allocation error\n\n");
