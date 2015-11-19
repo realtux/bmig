@@ -100,6 +100,12 @@ void get_remote_status(MYSQL *connection, const char **local_mig, int local_mig_
 void run_migs(const char *mig, long mig_size) {
 	MYSQL *connection;
 
+	connection = get_mysql_conn();
+
+	if (flag_transaction) {
+		mysql_query(connection, "start transaction;");
+	}
+
 	char *cur_command = malloc(mig_size + 1);
 
 	if (cur_command == NULL) {
@@ -109,26 +115,33 @@ void run_migs(const char *mig, long mig_size) {
 
 	int c;
 	int x = 0;
+	char delimiter = ';';
 	int mig_len = strlen(mig);
 
 	for (c = 0; c < mig_len; ++c) {
+		if (mig_len - c > 9 && strncmp(mig + c, "delimiter", 9) == 0) {
+			delimiter = *(mig + c + 10);
+
+			// push past delimiter, space, delimiter, newline
+			c = c + 12;
+		}
+
 		// continue copying command
 		cur_command[x] = mig[c];
 
 		// check if it's the end of the line, or end of the mig
-		if ((mig[c] == ';' && mig[c + 1] == '\n') ||
-			(mig[c] == ';' && c == mig_len - 1)) {
+		if ((mig[c] == delimiter && mig[c + 1] == '\n') ||
+			(mig[c] == delimiter && c == mig_len - 1)) {
 
 			// terminate the command for the connection
+			cur_command[x] = ';';
 			cur_command[x + 1] = '\0';
 
 			// run the up
-			connection = get_mysql_conn();
 			if (mysql_query(connection, cur_command)) {
 				// error
 				printf("\033[0;31merror: \033[0m%s\n", mysql_error(connection));
 			}
-			mysql_close(connection);
 
 			// reset where to copy pointer to
 			x = 0;
@@ -142,4 +155,10 @@ void run_migs(const char *mig, long mig_size) {
 	}
 
 	free(cur_command);
+
+	if (flag_transaction) {
+		mysql_query(connection, "commit;");
+	}
+
+	mysql_close(connection);
 }
