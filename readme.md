@@ -1,4 +1,4 @@
-# bmig 0.3.1 by [b](https://github.com/ebrian)
+# bmig 0.4.0 by [b](https://github.com/ebrian)
 
 bmig is a simple, clean, blazing fast mysql migration manager written in c
 
@@ -44,7 +44,10 @@ bmig.exe
 
 __general bmig guidelines__
 - to use bmig, you must be in the folder with your config.json file.
-
+```
+# global options
+-r    specify bmig root
+```
 ---
 
 __initialize bmig__
@@ -74,6 +77,10 @@ this will check each migration in the migrations folder or the folder you've con
 __process all pending migrations__
 ```
 bmig migrate
+
+# additional options
+-t    wrap each .sql in a transaction, use with -b to avoid an out of sequence migration
+-b    upon migration failure, don't proceed, use with -t to avoid a half completed migration
 ```
 this will run each migration marked as `dn` from `bmig status` and execute the contents from the `up:` label located in that migration. if multiple migrations are marked as `dn`, they will be run sequentially.
 
