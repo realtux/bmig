@@ -88,6 +88,10 @@ this will rollback each migration marked as `up` from `bmig status` and execute 
 ---
 
 ### changelog
+__0.4.0__ -- 2016-04-14
+  * added support for specifying bmig root on the command line
+  * copyright update
+
 __0.3.2__ -- 2015-11-19
   * added final support for the -t (transaction) flag
   * added support for delimiters to do migrations with triggers, procedures, etc.
