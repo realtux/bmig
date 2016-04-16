@@ -1,7 +1,7 @@
 /***
 The MIT License (MIT)
 
-Copyright (c) 2015-2016 Brian Seymour
+Copyright (c) 2015 Brian Seymour
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -31,9 +31,9 @@ THE SOFTWARE.
 
 enum json_type type;
 
-char *read_config(const char *config_file_loc) {
+char *read_config(void) {
 	long config_size;
-	char *json = read_file(config_file_loc, &config_size);
+	char *json = read_file("config.json", &config_size);
 
 	return json;
 }

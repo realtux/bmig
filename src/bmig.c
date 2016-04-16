@@ -1,7 +1,7 @@
 /***
 The MIT License (MIT)
 
-Copyright (c) 2015-2016 Brian Seymour
+Copyright (c) 2015 Brian Seymour
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -34,21 +34,16 @@ THE SOFTWARE.
 #include "mysql.h"
 #include "config.h"
 
-#define VERSION "0.4.0"
+#define VERSION "0.3.2"
 #define DEFAULT_MIGRATION_PATH "migrations/"
 
 static char *migration_path;
-
-static const char *bmig_root;
 
 int flag_transaction = 0;
 int flag_bail = 0;
 
 void menu(void) {
-	printf("usage: bmig command [options]\n");
-	printf("\n");
-	printf("    [options]\n");
-	printf("        -r    specify bmig root\n");
+	printf("usage: bmig command\n");
 	printf("\n");
 	printf("    init\n");
 	printf("        create the initial bmig structure and config\n");
@@ -183,10 +178,6 @@ void parse_flags(int argc, const char **argv) {
 		int x;
 		for (x = 1; x < flag_len; ++x) {
 			switch (argv[i][x]) {
-				case 'r':
-					++i;
-					bmig_root = argv[i];
-					break;
 				case 't':
 					flag_transaction = 1;
 					break;
@@ -211,25 +202,12 @@ int main(int argc, char **argv) {
 
 	char *command = argv[1];
 
-	// create config file location
-	char *config_file_loc;
-
-	if (bmig_root != NULL) {
-		config_file_loc = malloc(strlen(bmig_root) + 12 + 1);
-		strcpy(config_file_loc, bmig_root);
-		strcat(config_file_loc, "/");
-	} else {
-		config_file_loc = malloc(12 + 1);
-	}
-
-	strcat(config_file_loc, "config.json");
-
 	// init if necessary
 	if (strcmp(command, "init") == 0) {
 		printf("beginning init process...\n");
 
 		// check for config.json file
-		FILE *config = fopen(config_file_loc, "r");
+		FILE *config = fopen("config.json", "r");
 
 		if (config == NULL) {
 			char in_host[100];
@@ -294,7 +272,7 @@ int main(int argc, char **argv) {
 			strcat(template, "\",\n");
 			strcat(template, "\t\"migs\": \"\"\n}");
 
-			FILE *file = fopen(config_file_loc, "ab+");
+			FILE *file = fopen("config.json", "ab+");
 			fwrite(template, 1, sizeof(template), file);
 			fclose(file);
 
@@ -310,7 +288,7 @@ int main(int argc, char **argv) {
 	}
 
 	// read config file
-	char *config = read_config(config_file_loc);
+	char *config = read_config();
 
 	char *host = get_value(config, "host");
 	char *user = get_value(config, "user");
@@ -339,27 +317,7 @@ int main(int argc, char **argv) {
 
 	char *migs = get_value(config, "migs");
 
-	if (strlen(migs) > 0) {
-		if (bmig_root != NULL) {
-			migration_path = malloc(sizeof(bmig_root) + sizeof(migs) + 2);
-			strcpy(migration_path, bmig_root);
-			strcat(migration_path, "/");
-			strcat(migration_path, migs);
-		} else {
-			migration_path = malloc(sizeof(migs) + 1);
-			strcpy(migration_path, migs);
-		}
-	} else {
-		if (bmig_root != NULL) {
-			migration_path = malloc(sizeof(bmig_root) + sizeof(DEFAULT_MIGRATION_PATH) + 2);
-			strcpy(migration_path, bmig_root);
-			strcat(migration_path, "/");
-			strcat(migration_path, DEFAULT_MIGRATION_PATH);
-		} else {
-			migration_path = malloc(sizeof(DEFAULT_MIGRATION_PATH) + 1);
-			strcpy(migration_path, DEFAULT_MIGRATION_PATH);
-		}
-	}
+	migration_path = strlen(migs) > 0 ? migs : DEFAULT_MIGRATION_PATH;
 
 	set_db_state(host, user, pass, db);
 
@@ -402,11 +360,7 @@ int main(int argc, char **argv) {
 	}
 
 	if (strcmp(command, "create") == 0) {
-		if (argc < 3) {
-			printf("please type the migration name");
-			exit(1);
-		}
-		char *name = argv[2];
+		char *name = argc == 3 ? argv[2] : "migration";
 
 		// make lowercase
 		size_t i = 0;
@@ -443,12 +397,10 @@ int main(int argc, char **argv) {
 	if (strcmp(command, "migrate") == 0) {
 		// find and run all migrations
 		i = 0;
-		int did_mig = 0;
 		infinite {
 			if (local_mig[i] == NULL) break;
 
 			if (remote_mig[i] == 0) {
-				did_mig = 1;
 				printf("running migration: %s\n", local_mig[i]);
 
 				// read the migration file
@@ -487,10 +439,6 @@ int main(int argc, char **argv) {
 			}
 
 			++i;
-		}
-
-		if (did_mig == 0) {
-			printf("migrations up to date\n");
 		}
 	}
 
@@ -551,8 +499,6 @@ int main(int argc, char **argv) {
 		free(down);
 	}
 
-	free(config_file_loc);
-	free(migration_path);
 	free(remote_mig);
 
 	// clean up local mig pointers
