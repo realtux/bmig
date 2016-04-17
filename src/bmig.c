@@ -34,7 +34,7 @@ THE SOFTWARE.
 #include "mysql.h"
 #include "config.h"
 
-#define VERSION "0.3.2"
+#define VERSION "0.3.3"
 #define DEFAULT_MIGRATION_PATH "migrations/"
 
 static char *migration_path;
@@ -257,7 +257,8 @@ int main(int argc, char **argv) {
 			}
 
 			// create the config file
-			char template[450] = "{\n";
+			char template[450];
+			strcpy(template, "{\n");
 			strcat(template, "\t\"host\": \"");
 			strcat(template, in_host);
 			strcat(template, "\",\n");
@@ -273,7 +274,7 @@ int main(int argc, char **argv) {
 			strcat(template, "\t\"migs\": \"\"\n}");
 
 			FILE *file = fopen("config.json", "ab+");
-			fwrite(template, 1, sizeof(template), file);
+			fwrite(template, 1, strlen(template), file);
 			fclose(file);
 
 			printf("created config.json file\n");

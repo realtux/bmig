@@ -88,6 +88,9 @@ this will rollback each migration marked as `up` from `bmig status` and execute 
 ---
 
 ### changelog
+__0.3.3__ -- 2016-04-17
+  * fix error appending junk to the generated config.json file
+
 __0.3.2__ -- 2015-11-19
   * added final support for the -t (transaction) flag
   * added support for delimiters to do migrations with triggers, procedures, etc.
