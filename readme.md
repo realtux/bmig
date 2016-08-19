@@ -14,14 +14,14 @@ __# rhel__
 sudo yum install gcc mysql-devel json-c-devel
 ```
 
-__# os x (using [homebrew] (http://brew.sh))__
+__# macos (using [homebrew] (http://brew.sh))__
 ```
 brew install gcc json-c mysql-connector-c pkg-config
 ```
 
 ---
 
-### clone & compile (linux & os x)
+### clone & compile (linux & macos)
 
 ```
 git clone https://github.com/ebrian/bmig
@@ -116,7 +116,7 @@ __0.0.1-rc3__ -- 2015-10-26
 __0.0.1-rc2__ -- 2015-10-14
   * adhering to stricter compiler warnings
   * additional stability fixes
-  * os x support
+  * macos support
   * fix bug with terminal color not resetting
 
 __0.0.1-rc1__ -- 2015-10-12
@@ -134,7 +134,7 @@ ryan ferons ([@rferons](https://github.com/rferons)) -- continued moral support
 
 shannon warren ([@w2pc](https://github.com/w2pc)) -- for testing my products even if they suck
 
-corey edwards ([@cedwardsmedia](https://www.twitter.com/cedwardsmedia)) -- os x build procedures & testing
+corey edwards ([@cedwardsmedia](https://www.twitter.com/cedwardsmedia)) -- macos build procedures & testing
 
 ---
 
