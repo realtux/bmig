@@ -20,7 +20,7 @@ migrator: clean
 		-fstrict-aliasing
 
 install:
-	sudo cp bmig /usr/local/bin
+	cp bmig /usr/local/bin
 
 clean:
 	rm -f bmig
