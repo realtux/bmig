@@ -1,4 +1,4 @@
-# bmig 0.3.1 by [b](https://github.com/ebrian)
+# bmig 0.3.3 by [b](https://github.com/ebrian)
 
 bmig is a simple, clean, blazing fast mysql migration manager written in c
 
